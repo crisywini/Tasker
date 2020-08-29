@@ -1,0 +1,23 @@
+package co.uniquindio.semester7.model.database;
+
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DBLoader extends DBConnection{
+	
+	public void initDatabase() {
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			System.out.println("CREATING DATABASE");
+			statement.executeUpdate(CREATE_DATABASE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("DATABASE CREATED");
+	}
+	
+	
+	
+
+}

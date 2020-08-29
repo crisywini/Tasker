@@ -1,0 +1,8 @@
+package co.uniquindio.semester7.model;
+
+public class Class {
+	
+	private Teacher teacherAssociated;
+	
+
+}

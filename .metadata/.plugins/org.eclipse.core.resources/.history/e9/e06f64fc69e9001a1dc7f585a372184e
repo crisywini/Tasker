@@ -1,0 +1,39 @@
+package co.uniquindio.semester7.model.database;
+
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DBLoader extends DBConnection {
+
+	public void initDatabase() {
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			System.out.println("CREATING DATABASE");
+			statement.executeUpdate(CREATE_DATABASE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("DATABASE CREATED");
+	}
+
+	private void createTable(String sql) {
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void createTables() {
+		System.err.println("Creating tables...");
+		createTable("CREATE TABLE IF NOT EXISTS Teacher(code int NOT NULL AUTO_INCREMENT, name varchar(255), PRIMARY KEY (code));");
+		createTable("CREATE TABLE IF NOT EXISTS Student(code int NOT NULL AUTO_INCREMENT, name varchar(255), PRIMARY KEY (code));");
+		createTable("CREATE TABLE IF NOT EXISTS Class(code int NOT NULL AUTO_INCREMENT, name varchar(255), id_teacher int NOT NULL, PRIMARY_KEY(code), "
+				+ "CONSTRAINT fk_code_t FOREIGN KEY(id_teacher) REFERENCES Teacher(code) ON UPDATE CASCADE ON DELETE CASCADE);");
+		createTable("CREATE TABLE IF NOT EXISTS Link(code int NOT NULL AUTO_INCREMENT, link LONGTEXT, id_class int, PRIMARY KEY (code), CONSTRAINT fk_id_class FOREIGN KEY(id_class) REFERENCES Class(code) ON UPDATE CASCADE ON DELETE CASCADE);");
+	}
+
+}

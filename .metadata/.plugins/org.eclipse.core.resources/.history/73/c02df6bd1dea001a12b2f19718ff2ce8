@@ -1,0 +1,132 @@
+package co.uniquindio.semestre7.test;
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import org.junit.Test;
+
+import co.uniquindio.semester7.model.Admin;
+import co.uniquindio.semester7.model.Student;
+import co.uniquindio.semester7.model.Teacher;
+import co.uniquindio.semester7.model.exception.EntityNullException;
+import co.uniquindio.semester7.model.exception.EntityRepeatexception;
+import junit.framework.Assert;
+
+public class DatabaseTest {
+
+	private Admin admin = new Admin();
+
+	@Test
+	public void test() {
+
+	}
+
+	@Test
+	public void addTeacherTest() {
+		try {
+			admin.addTeacher("Joseph");
+			assertNotNull(admin.getTeacherByName("Joseph"));
+		} catch (EntityRepeatexception e) {
+			e.printStackTrace();
+		} catch (EntityNullException e) {
+			assertTrue("Null",false);
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void getTeacherByNameTest() {
+		try {
+			Teacher teacher = admin.getTeacherByName("Joseph");
+			System.out.println(teacher);
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void addStudentTest() {
+		try {
+			admin.addStudent("Alejandro");
+			assertNotNull(admin.getStudentByName("Alejandro"));
+		} catch (EntityRepeatexception e) {
+			e.printStackTrace();
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void getAllStudentsTest() {
+		List<Student> students = admin.getAllStudents();
+		for (Student student : students) {
+			System.out.println(student);
+		}
+	}
+
+	@Test
+	public void addClassTest() {
+		try {
+			admin.addClass(3, "Ingeniería de Software 2");
+			assertNotNull(admin.getClassByIdTeacher(3));
+		} catch (EntityRepeatexception e) {
+			e.printStackTrace();
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void removeClassTest() {
+		try {
+			admin.removeClass(1);
+			assertNull(admin.getTeacherById(1));
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void removeTeacherTest() {
+		try {
+			admin.removeTeacher(2);
+			assertTrue(admin.getAllTeachers().size() == 0);
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void removeStudentTest() {
+		try {
+			admin.removeStudent(2);
+			assertNull(admin.getStudentById(2));
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void removeStudentByNameTest() {
+		try {
+			admin.removeStudent("Alejandro");
+			assertNull(admin.getStudentByName("Alejandro"));
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void addStudentToClassTest() {
+		try {
+			admin.addStudentToClass(3, 1);
+			assertThat(, matcher);
+		} catch (EntityNullException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EntityRepeatexception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+}

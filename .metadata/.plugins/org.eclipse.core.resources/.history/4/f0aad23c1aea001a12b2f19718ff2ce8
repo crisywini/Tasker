@@ -1,0 +1,61 @@
+package co.uniquindio.semestre7.test;
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import org.junit.Test;
+
+import co.uniquindio.semester7.model.Admin;
+import co.uniquindio.semester7.model.Student;
+import co.uniquindio.semester7.model.Teacher;
+import co.uniquindio.semester7.model.exception.EntityNullException;
+import co.uniquindio.semester7.model.exception.EntityRepeatexception;
+
+public class DatabaseTest {
+
+	private Admin admin = new Admin();
+	@Test
+	public void test() {
+		
+	}
+	@Test
+	public void addTeacherTest() {
+		try {
+			admin.addTeacher("Joseph");
+			System.out.println("Teacher agregado");
+		} catch (EntityRepeatexception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void getTeacherByNameTest() {
+		try {
+			Teacher teacher = admin.getTeacherByName("Joseph");
+			System.out.println(teacher);
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void addStudentTest() {
+		try {
+			admin.addStudent("Alejandro");
+			System.out.println("ADDED");
+			Student student = admin.getStudentByName("Crisi");
+			System.out.println(student);
+		} catch (EntityRepeatexception e) {
+			e.printStackTrace();
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void getAllStudentsTest() {
+		List<Student> students = admin.getAllStudents();
+		for (Student student : students) {
+			System.out.println(student);
+		}
+	}
+
+}

@@ -1,0 +1,24 @@
+package co.uniquindio.semester7.model;
+
+import java.util.List;
+
+public class Class {
+	
+	private Teacher teacherAssociated;
+	private int id;
+	private String name;
+	private List<String> linksClass;
+	public Teacher getTeacherAssociated() {
+		return teacherAssociated;
+	}
+	public void setTeacherAssociated(Teacher teacherAssociated) {
+		this.teacherAssociated = teacherAssociated;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
+}

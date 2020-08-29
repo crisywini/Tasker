@@ -1,0 +1,12 @@
+package co.uniquindio.semester7.main;
+
+import co.uniquindio.semester7.model.database.DBLoader;
+
+public class Main {
+
+	public static void main(String[] args) {
+		DBLoader loader = new DBLoader();
+		loader.initDatabase();
+	}
+
+}

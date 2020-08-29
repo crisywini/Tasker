@@ -1,0 +1,7 @@
+package co.uniquindio.semester7.model;
+
+public interface AdminRemote {
+
+	void addTeacher(int id, String name);
+	
+}

@@ -1,0 +1,21 @@
+package co.uniquindio.semestre7.test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import co.uniquindio.semester7.model.Admin;
+
+public class DatabaseTest {
+
+	private Admin admin = new Admin();
+	@Test
+	public void test() {
+		
+	}
+	@Test
+	public void addTeacherTest() {
+		admin.addTeacher("Joseph");
+	}
+
+}

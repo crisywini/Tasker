@@ -1,0 +1,30 @@
+package co.uniquindio.semester7.model;
+
+import java.util.List;
+
+import co.uniquindio.semester7.model.exception.EntityNullException;
+import co.uniquindio.semester7.model.exception.EntityRepeatexception;
+
+public interface AdminRemote {
+
+	void removeClass(int idClass);
+	
+	void addTeacher(String name)throws EntityRepeatexception;
+	void removeTeacher(int id)throws EntityNullException;
+	
+	void addStudent(String name) throws EntityRepeatexception;
+	void removeStudent(int idStudent)throws EntityNullException;
+	
+	void addClass(int idTeacher, String name, int idFirstStudent)throws EntityRepeatexception, EntityNullException;
+	void addStudentToClass(int idClass, int idStudent)throws EntityNullException, EntityRepeatexception;
+	void addTeacherToClass(int idTeacher, int idClass)throws EntityNullException, EntityRepeatexception;
+	void addClass(int idTeacher, String name, int idClass)throws EntityRepeatexception, EntityNullException;
+
+	Teacher getTeacherById(int id)throws EntityNullException;
+	Teacher getTeacherByName(String name)throws EntityNullException;
+	
+	List<Class> getAllClasses();
+	List<Student> getAllStudents();
+	List<Teacher> getAllTeachers();
+	
+}

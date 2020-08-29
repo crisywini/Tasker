@@ -1,0 +1,74 @@
+package co.uniquindio.semester7.model;
+
+import java.util.List;
+
+import co.uniquindio.semester7.model.database.DBConnection;
+import co.uniquindio.semester7.model.exception.EntityNullException;
+import co.uniquindio.semester7.model.exception.EntityRepeatexception;
+
+public class Admin extends DBConnection implements AdminRemote{
+	
+	
+
+	@Override
+	public void addTeacher(int id, String name) {
+		
+	}
+
+	@Override
+	public void removeClass(int idClass) {
+		
+	}
+
+	@Override
+	public void removeTeacher(int id) throws EntityNullException {
+		
+	}
+
+	@Override
+	public void addStudent(String name, int idStudent) throws EntityRepeatexception {
+		
+	}
+
+	@Override
+	public void removeStudent(int idStudent) throws EntityNullException {
+		
+	}
+
+	@Override
+	public void addClass(int idClass, int idTeacher, String name, int idFirstStudent)
+			throws EntityRepeatexception, EntityNullException {
+		
+	}
+
+	@Override
+	public void addStudentToClass(int idClass, int idStudent) throws EntityNullException, EntityRepeatexception {
+		
+	}
+
+	@Override
+	public void addTeacherToClass(int idTeacher, int idClass) throws EntityNullException, EntityRepeatexception {
+		
+	}
+
+	@Override
+	public void addClass(int idTeacher, String name, int idClass) throws EntityRepeatexception, EntityNullException {
+		
+	}
+
+	@Override
+	public List<Class> getAllClasses() {
+		return null;
+	}
+
+	@Override
+	public List<Student> getAllStudents() {
+		return null;
+	}
+
+	@Override
+	public List<Teacher> getAllTeachers() {
+		return null;
+	}
+
+}

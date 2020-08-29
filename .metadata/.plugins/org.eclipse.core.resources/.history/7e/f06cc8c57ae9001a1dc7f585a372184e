@@ -1,0 +1,16 @@
+package co.uniquindio.semester7.main;
+
+import co.uniquindio.semester7.model.Admin;
+import co.uniquindio.semester7.model.exception.EntityNullException;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Admin admin = new Admin();
+		try {
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

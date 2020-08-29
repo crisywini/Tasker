@@ -1,0 +1,180 @@
+package co.uniquindio.semester7.model;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import co.uniquindio.semester7.model.database.DBConnection;
+import co.uniquindio.semester7.model.exception.EntityNullException;
+import co.uniquindio.semester7.model.exception.EntityRepeatexception;
+
+public class Admin extends DBConnection implements AdminRemote {
+
+	@Override
+	public void addTeacher(String name) throws EntityRepeatexception {
+		String sql = "INSERT INTO Teacher(name) VALUES('" + name + "');";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void removeClass(int idClass) {
+
+	}
+
+	@Override
+	public void removeTeacher(int id) throws EntityNullException {
+		String sql = "DELETE FROM Teacher WHERE code = '" + id + "';";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void addStudent(String name) throws EntityRepeatexception {
+		String sql = "INSERT INTO Student(name) VALUES('" + name + "');";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void removeStudent(int idStudent) throws EntityNullException {
+		String sql = "DELETE FROM Student WHERE code = " + idStudent + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void addClass(int idTeacher, String name, int idFirstStudent)
+			throws EntityRepeatexception, EntityNullException {
+
+	}
+
+	@Override
+	public void addStudentToClass(int idClass, int idStudent) throws EntityNullException, EntityRepeatexception {
+
+	}
+
+	@Override
+	public void addTeacherToClass(int idTeacher, int idClass) throws EntityNullException, EntityRepeatexception {
+
+	}
+
+	@Override
+	public void addClass(int idTeacher, String name) throws EntityRepeatexception, EntityNullException {
+		String sql = "INSERT INTO Class(name, id_teacher) VALUES('" + name + "', +" + idTeacher + ");";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public List<Class> getAllClasses() {
+		List<Class> classes = new ArrayList<Class>();
+		String sql = "SELECT * FROM Class";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				classes.add(
+						new Class(getTeacherById(resultSet.getInt(3)), resultSet.getInt(1), resultSet.getString(2)));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+
+		return classes;
+	}
+
+	@Override
+	public List<Student> getAllStudents() {
+		List<Student> students = new ArrayList<Student>();
+		String sql = "SELECT * FROM Student;";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				students.add(new Student(resultSet.getInt(1), resultSet.getString(2)));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return students;
+	}
+
+	@Override
+	public List<Teacher> getAllTeachers() {
+		return null;
+	}
+
+	@Override
+	public Teacher getTeacherById(int id) throws EntityNullException {
+		Teacher teacher = null;
+		String sql = "SELECT * FROM Teacher WHERE code = " + id + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				teacher = new Teacher(resultSet.getInt(1), resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (teacher == null) {
+			throw new EntityNullException("El teacher con id: " + id + " no está registrado");
+		}
+		return teacher;
+	}
+
+	@Override
+	public Teacher getTeacherByName(String name) throws EntityNullException {
+
+		Teacher teacher = null;
+		String sql = "SELECT * FROM Teacher WHERE name like '" + name + "';";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				teacher = new Teacher(resultSet.getInt(1), resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (teacher == null) {
+			throw new EntityNullException("El teacher con nombre: " + name + " no está registrado");
+		}
+		return teacher;
+	}
+
+}

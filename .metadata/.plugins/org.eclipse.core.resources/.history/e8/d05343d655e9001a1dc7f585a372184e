@@ -1,0 +1,5 @@
+package co.uniquindio.semester7.model.exception;
+
+public class EntityRepeatexception {
+
+}
