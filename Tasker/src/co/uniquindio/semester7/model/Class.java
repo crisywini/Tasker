@@ -10,6 +10,7 @@ public class Class {
 	private String name;
 	private List<Link> linksClass;
 	private List<Student> studens;
+	private List<Schedule> schedules;
 
 	public Class(Teacher teacherAssociated, int id, String name) {
 		this.teacherAssociated = teacherAssociated;
@@ -17,8 +18,8 @@ public class Class {
 		this.name = name;
 		studens = new ArrayList<Student>();
 		linksClass = new ArrayList<Link>();
+		schedules = new ArrayList<Schedule>();
 	}
-	
 
 	public Teacher getTeacherAssociated() {
 		return teacherAssociated;
@@ -60,10 +61,17 @@ public class Class {
 		this.linksClass = linksClass;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Class [id=" + id + ", name=" + name + "]";
+	}
+
+	public List<Schedule> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(List<Schedule> schedules) {
+		this.schedules = schedules;
 	}
 
 }

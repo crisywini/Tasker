@@ -44,6 +44,7 @@ public class DBLoader extends DBConnection {
 				"CREATE TABLE IF NOT EXISTS Link(code int NOT NULL AUTO_INCREMENT, link LONGTEXT, id_class int NOT NULL, PRIMARY KEY (code), CONSTRAINT fk_id_class FOREIGN KEY(id_class) REFERENCES Class(code) ON UPDATE CASCADE ON DELETE CASCADE);");
 		createTable(
 				"CREATE TABLE IF NOT EXISTS Class_Student(code_student int NOT NULL, code_class int NOT NULL, PRIMARY KEY(code_student, code_class), CONSTRAINT fk_code_s FOREIGN KEY(code_student) REFERENCES Student(code) ON UPDATE CASCADE ON DELETE CASCADE, CONSTRAINT fk_code_c FOREIGN KEY(code_class) REFERENCES Class(code) ON UPDATE CASCADE ON DELETE CASCADE)");
+		createTable("CREATE TABLE IF NOT EXISTS Schedule(code int NOT NULL AUTO_INCREMENT, day varchar(255), start_hour int, end_hour int, id_class int NOT NULL, PRIMARY KEY(code), CONSTRAINT fk_class_id FOREIGN KEY(id_class) REFERENCES Class(code) ON UPDATE CASCADE ON DELETE CASCADE);");
 	}
 
 }

@@ -1,0 +1,430 @@
+package co.uniquindio.semester7.model;
+
+import java.sql.PreparedStatement;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import co.uniquindio.semester7.model.database.DBConnection;
+import co.uniquindio.semester7.model.exception.EntityNullException;
+import co.uniquindio.semester7.model.exception.EntityRepeatexception;
+
+public class Admin extends DBConnection implements AdminRemote {
+
+	@Override
+	public void addTeacher(String name) throws EntityRepeatexception {
+		String sql = "INSERT INTO Teacher(name) VALUES('" + name + "');";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void removeClass(int idClass) throws EntityNullException {
+		if (getClassById(idClass) == null) {
+			throw new EntityNullException("La clase: " + idClass + " no está registrada Crisi");
+		}
+		String sql = "DELETE FROM Class WHERE code = " + idClass + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void removeTeacher(int id) throws EntityNullException {
+		String sql = "DELETE FROM Teacher WHERE code = " + id + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void addStudent(String name) throws EntityRepeatexception {
+		String sql = "INSERT INTO Student(name) VALUES('" + name + "');";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void removeStudent(int idStudent) throws EntityNullException {
+		String sql = "DELETE FROM Student WHERE code = " + idStudent + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void addStudentToClass(int idClass, int idStudent) throws EntityNullException, EntityRepeatexception {
+		Student student = getStudentById(idStudent);
+		Class classR = getClassById(idClass);
+		if (student == null) {
+			throw new EntityNullException("El estudiante no está registrado Crisi");
+		}
+		if (classR == null) {
+			throw new EntityNullException("La clase no está registrada Crisi");
+		}
+		if (getStudentsByClass(idClass).isEmpty()) {
+
+			String sql = "INSERT INTO class_student(code_student, code_class) VALUES(" + student.getId() + ", "
+					+ classR.getId() + ")";
+			try {
+				PreparedStatement query = connection.prepareStatement(sql);
+				query.executeUpdate();
+				query.close();
+			} catch (SQLException e) {
+				if (e.getMessage().contains(""))
+					;
+				e.printStackTrace();
+			}
+		} else {
+			throw new EntityRepeatexception("El estudiante: " + idStudent + " ya está registrado en esa clase Crisi");
+		}
+
+	}
+
+	@Override
+	public void setTeacherToClass(int idTeacher, int idClass) throws EntityNullException {
+		Class classR = getClassById(idClass);
+		Teacher teacher = getTeacherById(idTeacher);
+		if (classR == null || teacher == null) {
+			throw new EntityNullException("Alguna de las entidades no está registrada Crisi");
+		}
+
+		String sql = "UPDATE Class SET id_teacher =" + idTeacher + " WHERE code = " + idClass + " ;";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void addClass(int idTeacher, String name, String day1, String day2, int startHour1, int endHour1, int startHour2, int endHour2) throws EntityRepeatexception, EntityNullException {
+		
+		String sql = "INSERT INTO Class(name, id_teacher) VALUES('" + name + "', +" + idTeacher + ");";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		int codeClass = 0;
+		String sql2 = "INSERT INTO Schedule(day, start_hour, end_hour, id_class) VALUES('"+day1+"', "+startHour1+",+"+endHour1+", "+codeClass+")";
+	}
+
+	@Override
+	public List<Class> getAllClasses() {
+		List<Class> classes = new ArrayList<Class>();
+		String sql = "SELECT * FROM Class";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				classes.add(
+						new Class(getTeacherById(resultSet.getInt(3)), resultSet.getInt(1), resultSet.getString(2)));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (EntityNullException e) {
+			e.printStackTrace();
+		}
+
+		return classes;
+	}
+
+	@Override
+	public List<Student> getAllStudents() {
+		List<Student> students = new ArrayList<Student>();
+		String sql = "SELECT * FROM Student;";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				students.add(new Student(resultSet.getInt(1), resultSet.getString(2)));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return students;
+	}
+
+	@Override
+	public List<Teacher> getAllTeachers() {
+		List<Teacher> teachers = new ArrayList<Teacher>();
+		String sql = "SELECT * FROM Teacher";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				teachers.add(new Teacher(resultSet.getInt(1), resultSet.getString(2)));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return teachers;
+	}
+
+	@Override
+	public Teacher getTeacherById(int id) throws EntityNullException {
+		Teacher teacher = null;
+		String sql = "SELECT * FROM Teacher WHERE code = " + id + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				teacher = new Teacher(resultSet.getInt(1), resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (teacher == null) {
+			throw new EntityNullException("El teacher con id: " + id + " no está registrado");
+		}
+		return teacher;
+	}
+
+	@Override
+	public Teacher getTeacherByName(String name) throws EntityNullException {
+
+		Teacher teacher = null;
+		String sql = "SELECT * FROM Teacher WHERE name like '" + name + "';";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				teacher = new Teacher(resultSet.getInt(1), resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (teacher == null) {
+			throw new EntityNullException("El teacher con nombre: " + name + " no está registrado");
+		}
+		return teacher;
+	}
+
+	@Override
+	public Class getClassById(int idClass) throws EntityNullException {
+		Class classRequested = null;
+		String sql = "SELECT * FROM Class WHERE code = " + idClass + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				classRequested = new Class(getTeacherById(resultSet.getInt(3)), resultSet.getInt(1),
+						resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (classRequested == null) {
+			throw new EntityNullException("La clase con id: " + idClass + " no se encuentra registrada");
+		}
+		return classRequested;
+	}
+
+	@Override
+	public Student getStudentById(int idStudent) throws EntityNullException {
+		Student student = null;
+		String sql = "SELECT * FROM Student WHERE code = " + idStudent + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				student = new Student(resultSet.getInt(1), resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (student == null) {
+			throw new EntityNullException("El estudiante con: " + idStudent + " no está registrado");
+		}
+		return student;
+	}
+
+	@Override
+	public List<Student> getStudentsByClass(int idClass) {
+		List<Student> students = new ArrayList<Student>();
+		String sql = "SELECT code_student FROM class_student WHERE code_class = " + idClass + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				students.add(getStudentById(resultSet.getInt(1)));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (EntityNullException doesNotHasToHappen) {
+			doesNotHasToHappen.printStackTrace();
+		}
+
+		return students;
+	}
+
+	@Override
+	public Class getClassByIdTeacher(int idTeacher) throws EntityNullException {
+		Class classRequested = null;
+		String sql = "SELECT * FROM Class WHERE id_teacher = " + idTeacher + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				classRequested = new Class(getTeacherById(resultSet.getInt(3)), resultSet.getInt(1),
+						resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (classRequested == null) {
+			throw new EntityNullException("La clase con el profe: " + idTeacher + " no está registrada Crisi");
+		}
+		return classRequested;
+	}
+
+	@Override
+	public List<Class> getClassesByName(String nameClass) {
+		List<Class> classes = new ArrayList<Class>();
+		String sql = "SELECT * FROM Class WHERE name like '%" + nameClass + "%';";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				classes.add(
+						new Class(getTeacherById(resultSet.getInt(3)), resultSet.getInt(1), resultSet.getString(2)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (EntityNullException doesNotHasToHappen) {
+			doesNotHasToHappen.printStackTrace();
+		}
+
+		return classes;
+	}
+
+	@Override
+	public List<Teacher> getTeachersByName(String name) {
+		List<Teacher> teachers = new ArrayList<Teacher>();
+		String sql = "SELECT * FROM Teacher WHERE name like '%" + name + "%';";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				teachers.add(new Teacher(resultSet.getInt(1), resultSet.getString(2)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return teachers;
+	}
+
+	@Override
+	public Student getStudentByName(String name) throws EntityNullException {
+		Student student = null;
+		String sql = "SELECT * FROM Student WHERE name like '%" + name + "%';";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				student = new Student(resultSet.getInt(1), resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (student == null) {
+			throw new EntityNullException("El estudiante: " + name + " no está registrado Crisi");
+		}
+		return student;
+	}
+
+	@Override
+	public void removeStudent(String name) throws EntityNullException {
+		if (getStudentByName(name) == null) {
+			throw new EntityNullException("El estudiante: " + name + " no está registrado Crisi");
+		}
+		String sql = "DELETE FROM Student WHERE name = '" + name + "';";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public int countStudentInClass(int idStudent, int idClass) throws EntityNullException {
+		Class classR = getClassById(idClass);
+		Student student = getStudentById(idStudent);
+		if (classR == null) {
+			throw new EntityNullException("La clase: " + idClass + " no está registrada Crisi");
+		}
+		if (student == null) {
+			throw new EntityNullException("El estudiante: " + idStudent + " no está resgitrado Crisi");
+		}
+		int out = 0;
+		String sql = "SELECT COUNT(cs.code_student) FROM class_student cs WHERE cs.code_class = " + idClass + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				out = resultSet.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return out;
+	}
+
+	
+	@Override
+	public List<Link> getAllLinks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Schedule> getAllSchedules() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

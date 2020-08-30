@@ -1,0 +1,178 @@
+package co.uniquindio.semester7.model;
+
+import java.util.List;
+
+import co.uniquindio.semester7.model.exception.EntityNullException;
+import co.uniquindio.semester7.model.exception.EntityRepeatexception;
+
+public class Delegate implements AdminRemote {
+
+	private Admin admin;
+	public static Delegate delegate = instance();
+
+	private Delegate() {
+		admin = new Admin();
+	}
+
+	private static Delegate instance() {
+		if (delegate == null) {
+			delegate = new Delegate();
+		}
+		return delegate;
+	}
+
+	@Override
+	public void removeClass(int idClass) throws EntityNullException {
+		admin.removeClass(idClass);
+	}
+
+	@Override
+	public void addTeacher(String name) throws EntityRepeatexception {
+		admin.addTeacher(name);
+	}
+
+	@Override
+	public void removeTeacher(int id) throws EntityNullException {
+		admin.removeTeacher(id);
+	}
+
+	@Override
+	public void addStudent(String name) throws EntityRepeatexception {
+		admin.addStudent(name);
+	}
+
+	@Override
+	public void removeStudent(int idStudent) throws EntityNullException {
+
+	}
+
+	@Override
+	public void removeStudent(String name) throws EntityNullException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addStudentToClass(int idClass, int idStudent) throws EntityNullException, EntityRepeatexception {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setTeacherToClass(int idTeacher, int idClass) throws EntityNullException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addClass(int idTeacher, String name, String day1, String day2, int startHour1, int endHour1,
+			int startHour2, int endHour2) throws EntityRepeatexception, EntityNullException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Class getClassById(int idClass) throws EntityNullException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Student getStudentById(int idStudent) throws EntityNullException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Student getStudentByName(String name) throws EntityNullException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int countStudentInClass(int idStudent, int idClass) throws EntityNullException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Class getClassByIdTeacher(int idTeacher) throws EntityNullException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addLinkToClass(int idClass, String link) throws EntityNullException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Teacher getTeacherById(int id) throws EntityNullException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Teacher getTeacherByName(String name) throws EntityNullException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Class> getAllClasses() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Student> getAllStudents() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Teacher> getAllTeachers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Student> getStudentsByClass(int idClass) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Class> getClassesByName(String nameClass) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Teacher> getTeachersByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Link> getAllLinks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Schedule> getAllSchedules() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
+
+}

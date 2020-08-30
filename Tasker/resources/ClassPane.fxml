@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="CENTER" prefHeight="750.0" prefWidth="500.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="co.uniquindio.semester7.controller.ClassPaneController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="141.0" prefWidth="500.0">
+         <children>
+            <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="labelNameClass" prefHeight="55.0" prefWidth="110.0" text="Label">
+               <font>
+                  <Font size="38.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="labelNameClass1" prefHeight="55.0" prefWidth="110.0" text="Links">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <ListView fx:id="linkList" prefHeight="200.0" prefWidth="200.0" />
+      <TableView fx:id="scheduleTableView" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="dayTableColumn" prefWidth="75.0" text="Dia" />
+          <TableColumn fx:id="hourTableColumn" prefWidth="75.0" text="Hora" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</VBox>

@@ -1,0 +1,38 @@
+package co.uniquindio.semester7.view.observables;
+
+import javafx.beans.property.StringProperty;
+
+public class ClassObservable {
+	private StringProperty code, teacher, name;
+
+	public ClassObservable(StringProperty code, StringProperty teacher, StringProperty name) {
+		this.code = code;
+		this.teacher = teacher;
+		this.name = name;
+	}
+
+	public StringProperty getCode() {
+		return code;
+	}
+
+	public void setCode(StringProperty code) {
+		this.code = code;
+	}
+
+	public StringProperty getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(StringProperty teacher) {
+		this.teacher = teacher;
+	}
+
+	public StringProperty getName() {
+		return name;
+	}
+
+	public void setName(StringProperty name) {
+		this.name = name;
+	}
+
+}

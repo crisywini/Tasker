@@ -5,9 +5,9 @@ public class Link {
 	private String link;
 	private Class classAssociated;
 
-	public Link(int id, String link) {
-		this.id = id;
+	public Link(String link, Class classAssociated) {
 		this.link = link;
+		this.classAssociated = classAssociated;
 	}
 
 	public int getId() {
@@ -38,6 +38,5 @@ public class Link {
 	public String toString() {
 		return "Link [id=" + id + ", link=" + link + "]";
 	}
-	
 
 }

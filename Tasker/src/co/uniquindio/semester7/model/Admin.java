@@ -126,9 +126,10 @@ public class Admin extends DBConnection implements AdminRemote {
 	}
 
 	@Override
-	public void addClass(int idTeacher, String name) throws EntityRepeatexception, EntityNullException {
-		String sql = "INSERT INTO Class(name, id_teacher) VALUES('" + name + "', +" + idTeacher + ");";
+	public void addClass(int idTeacher, String name, String day1, String day2, int startHour1, int endHour1,
+			int startHour2, int endHour2) throws EntityRepeatexception, EntityNullException {
 
+		String sql = "INSERT INTO Class(name, id_teacher) VALUES('" + name + "', +" + idTeacher + ");";
 		try {
 			PreparedStatement query = connection.prepareStatement(sql);
 			query.executeUpdate();
@@ -136,6 +137,42 @@ public class Admin extends DBConnection implements AdminRemote {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		int codeClass = getCodeClassByName(name);
+		String sql2 = "INSERT INTO Schedule(day, start_hour, end_hour, id_class) VALUES('" + day1 + "', " + startHour1
+				+ ",+" + endHour1 + ", " + codeClass + ");";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql2);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		String sql3 = "INSERT INTO Schedule(day, start_hour, end_hour, id_class) VALUES('" + day2 + "', " + startHour2
+				+ ",+" + endHour2 + ", " + codeClass + ");";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql3);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public int getCodeClassByName(String nameClass) {
+		int code = -1;
+		String sql = "SELECT code FROM Class WHERE name = '" + nameClass + "'";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				code = resultSet.getInt(1);
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return code;
 	}
 
 	@Override
@@ -410,6 +447,62 @@ public class Admin extends DBConnection implements AdminRemote {
 			e.printStackTrace();
 		}
 		return out;
+	}
+
+	@Override
+	public List<Link> getAllLinks() {
+		List<Link> links = new ArrayList<Link>();
+		String sql = "SELECT * FROM link;";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				links.add(new Link(resultSet.getString(2), getClassById(resultSet.getInt(3))));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (EntityNullException shouldNotHappen) {
+			shouldNotHappen.printStackTrace();
+		}
+		return links;
+	}
+
+	@Override
+	public List<Schedule> getAllSchedules() {
+		List<Schedule> schedules = new ArrayList<Schedule>();
+		String sql = "SELECT * FROM Schedule;";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				schedules.add(new Schedule(resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4),
+						getClassById(resultSet.getInt(5))));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (EntityNullException shouldNotHappen) {
+			shouldNotHappen.printStackTrace();
+		}
+
+		return schedules;
+	}
+
+	@Override
+	public void addLinkToClass(int idClass, String link) throws EntityNullException {
+		Class classR = getClassById(idClass);
+		if (classR == null) {
+			throw new EntityNullException("La clase: " + idClass + " no está registrada Crisi");
+		}
+		String sql = "INSERT INTO Link(link, id_class) VALUES('" + link + "', " + idClass + ");";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			query.executeUpdate();
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

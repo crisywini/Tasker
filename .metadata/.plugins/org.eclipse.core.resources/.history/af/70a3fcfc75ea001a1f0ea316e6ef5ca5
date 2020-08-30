@@ -1,0 +1,10 @@
+package co.uniquindio.semester7.view.observables;
+
+import javafx.beans.property.StringProperty;
+
+public class TeacherObservable {
+	
+	private StringProperty code;
+	private StringProperty name;
+
+}

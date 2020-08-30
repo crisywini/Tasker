@@ -19,12 +19,13 @@ public interface AdminRemote {
 	
 	void addStudentToClass(int idClass, int idStudent)throws EntityNullException, EntityRepeatexception;
 	void setTeacherToClass(int idTeacher, int idClass)throws EntityNullException;
-	void addClass(int idTeacher, String name)throws EntityRepeatexception, EntityNullException;
+	void addClass(int idTeacher, String name, String day1, String day2, int startHour1, int endHour1, int startHour2, int endHour2)throws EntityRepeatexception, EntityNullException;
 	Class getClassById(int idClass)throws EntityNullException;
 	Student getStudentById(int idStudent)throws EntityNullException;
 	Student getStudentByName(String name)throws EntityNullException;
 	int countStudentInClass(int idStudent, int idClass)throws EntityNullException;
 	Class getClassByIdTeacher(int idTeacher)throws EntityNullException;
+	void addLinkToClass(int idClass, String link)throws EntityNullException;
 	
 	Teacher getTeacherById(int id)throws EntityNullException;
 	Teacher getTeacherByName(String name)throws EntityNullException;
@@ -35,4 +36,7 @@ public interface AdminRemote {
 	List<Student> getStudentsByClass(int idClass);
 	List<Class> getClassesByName(String nameClass);
 	List<Teacher> getTeachersByName(String name);
+	List<Link> getAllLinks();
+	List<Schedule> getAllSchedules();
+	
 }
