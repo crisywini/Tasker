@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import co.uniquindio.semester7.model.Admin;
 import co.uniquindio.semester7.model.Class;
+import co.uniquindio.semester7.model.Link;
 import co.uniquindio.semester7.model.Schedule;
 import co.uniquindio.semester7.model.Student;
 import co.uniquindio.semester7.model.Teacher;
@@ -20,7 +21,8 @@ public class DatabaseTest {
 
 	@Test
 	public void test() {
-
+		List<Link> links = admin.getLinksByClassId(22);
+		System.out.println(links);
 	}
 
 	@Test

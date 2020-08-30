@@ -26,6 +26,8 @@ public interface AdminRemote {
 	int countStudentInClass(int idStudent, int idClass)throws EntityNullException;
 	Class getClassByIdTeacher(int idTeacher)throws EntityNullException;
 	void addLinkToClass(int idClass, String link)throws EntityNullException;
+	Class getClassByName(String nameClass)throws EntityNullException;
+
 	
 	Teacher getTeacherById(int id)throws EntityNullException;
 	Teacher getTeacherByName(String name)throws EntityNullException;
@@ -38,5 +40,6 @@ public interface AdminRemote {
 	List<Teacher> getTeachersByName(String name);
 	List<Link> getAllLinks();
 	List<Schedule> getAllSchedules();
+	List<Link> getLinksByClassId(int id);
 	
 }

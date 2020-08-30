@@ -6,9 +6,13 @@ package co.uniquindio.semester7.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import co.uniquindio.semester7.main.Main;
+import co.uniquindio.semester7.model.Class;
+import co.uniquindio.semester7.model.exception.EntityNullException;
+import co.uniquindio.semester7.view.observables.ClassObservable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -61,8 +65,11 @@ public class MenuPaneController {
 
 		rootNode.setExpanded(true);// Setea que se abra al principio
 		TreeItem<String> classes = new TreeItem<String>("Clases", icon1);
-		TreeItem<String> software2 = new TreeItem<String>("Software2");
-		classes.getChildren().add(software2);
+		List<Class> classesList = Main.DELEGATE.getAllClasses();
+		for (Class class1 : classesList) {
+			TreeItem<String> classAux = new TreeItem<String>(class1.getName());
+			classes.getChildren().add(classAux);
+		}
 
 		TreeItem<String> teachers = new TreeItem<String>("Profes", icon2);
 		TreeItem<String> schedule = new TreeItem<String>("Horario", icon3);
@@ -85,6 +92,13 @@ public class MenuPaneController {
 		}
 		// Hacer for e iterar sobre todos los nombres de las clases para verificar
 		// cuando sea correcto
+		List<Class> classesList = Main.DELEGATE.getAllClasses();
+		for (Class class1 : classesList) {
+			if (class1.getName().equalsIgnoreCase(item.getValue())) {
+				showClassPane(item.getValue());
+			}
+		}
+		
 		if (item.getValue().equalsIgnoreCase("horario")) {
 			showSchedulePane();
 		}
@@ -105,12 +119,18 @@ public class MenuPaneController {
 	public void showClassPane(String nameClass) {
 		if (!nameClass.equalsIgnoreCase("clases")) {
 			try {
+				Class classAux = Main.DELEGATE.getClassByName(nameClass);
+				ClassObservable classAuxObservable = new ClassObservable(classAux.getId() + "",
+						classAux.getTeacherAssociated().getName(), classAux.getName());
 				FXMLLoader loader = new FXMLLoader(Main.class.getResource("/ClassPane.fxml"));
 				VBox parent = loader.load();
 				ClassPaneController controller = loader.getController();
 				controller.setMenuPaneController(this);
+				controller.setClassObservable(classAuxObservable);
 				modifyPane.setCenter(parent);
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (EntityNullException e) {
 				e.printStackTrace();
 			}
 		} else {

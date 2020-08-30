@@ -505,4 +505,44 @@ public class Admin extends DBConnection implements AdminRemote {
 
 	}
 
+	@Override
+	public List<Link> getLinksByClassId(int id) {
+		List<Link> links = new ArrayList<Link>();
+		String sql = "SELECT * FROM link WHERE id_class = " + id + ";";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				links.add(new Link(resultSet.getString(2), getClassById(resultSet.getInt(3))));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (EntityNullException shouldNotHappen) {
+			shouldNotHappen.printStackTrace();
+		}
+
+		return links;
+	}
+
+	@Override
+	public Class getClassByName(String nameClass) throws EntityNullException {
+		Class classR = null;
+		String sql = "SELECT * FROM Class WHERE name= '" + nameClass + "';";
+		try {
+			PreparedStatement query = connection.prepareStatement(sql);
+			ResultSet resultSet = query.executeQuery();
+			while (resultSet.next()) {
+				classR = new Class(getTeacherById(resultSet.getInt(3)), resultSet.getInt(1), resultSet.getString(2));
+			}
+			query.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (EntityNullException shouldNotHappen) {
+			shouldNotHappen.printStackTrace();
+		}
+
+		return classR;
+	}
+
 }

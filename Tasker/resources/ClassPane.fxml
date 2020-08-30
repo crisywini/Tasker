@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox alignment="CENTER" prefHeight="750.0" prefWidth="500.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="co.uniquindio.semester7.controller.ClassPaneController">
+<VBox alignment="CENTER" prefHeight="750.0" prefWidth="500.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.semester7.controller.ClassPaneController">
    <children>
       <HBox alignment="CENTER" prefHeight="141.0" prefWidth="500.0">
          <children>
@@ -19,7 +18,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label fx:id="labelNameClass" prefHeight="55.0" prefWidth="110.0" text="Label">
+            <Label fx:id="labelNameClass" prefHeight="83.0" prefWidth="488.0" text="Label" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="38.0" />
                </font>
@@ -35,7 +34,7 @@
             </Label>
          </children>
       </HBox>
-      <ListView fx:id="linkList" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="linkList" onContextMenuRequested="#handleSelectedItem" onMouseClicked="#handleSelectedItem" prefHeight="200.0" prefWidth="200.0" />
       <TableView fx:id="scheduleTableView" prefHeight="200.0" prefWidth="200.0">
         <columns>
           <TableColumn fx:id="dayTableColumn" prefWidth="75.0" text="Dia" />

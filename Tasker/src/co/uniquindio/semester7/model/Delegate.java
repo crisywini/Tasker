@@ -155,4 +155,14 @@ public class Delegate implements AdminRemote {
 		this.admin = admin;
 	}
 
+	@Override
+	public List<Link> getLinksByClassId(int id) {
+		return admin.getLinksByClassId(id);
+	}
+
+	@Override
+	public Class getClassByName(String nameClass) throws EntityNullException {
+		return admin.getClassByName(nameClass);
+	}
+
 }
